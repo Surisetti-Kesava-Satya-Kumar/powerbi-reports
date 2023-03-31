@@ -1,6 +1,7 @@
-name: Deploy powerbi records
+
+name: Deploy to workspace
 on: 
-  workflow_dispatch:
+  workflow_dispatch
 jobs:
   Deploy-Asset:
     runs-on: ubuntu-latest
@@ -13,11 +14,14 @@ jobs:
         uses: tj-actions/changed-files@v19
         with:
           separator: ","
-          quotepath: "false"
-      - name: Upload files
-        uses: mohitnayar123/power-bi-utils@v1.0.3 # Replace this with the latest version
+          quotepath: false
+      - name: Power BI Workspace Deploy
+        uses: nathangiusti/Power-BI-Workspace-Deploy@v1.2
         with:
           files: ${{ steps.changed-files.outputs.all_modified_files }}
+          separator: ","
+          tenant_id: "ctid=84f1e4ea-8554-43e1-8709-f0b8589ea118"
+          config_file: ".github/config/deploy-config.yaml"
         env:
-          CLIENT_ID: ${{ secrets.client_id }}
-          CLIENT_SECRET: ${{ secrets.client_secret }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
